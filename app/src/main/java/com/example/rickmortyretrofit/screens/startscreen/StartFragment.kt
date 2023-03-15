@@ -22,7 +22,7 @@ import com.example.rickmortyretrofit.model.Result
 
 class StartFragment : Fragment() {
     lateinit var binding: FragmentStartBinding
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
     lateinit var adapter: RcViewAdapter
     val webRepo = WebRepository()
     var number = 1
@@ -45,10 +45,11 @@ class StartFragment : Fragment() {
     }
 
     private fun init() {
-        recyclerView = APP.findViewById(R.id.rcViewStart)
+        recyclerView = binding.rcViewStart
         recyclerView.layoutManager = GridLayoutManager(context,2)
         adapter = RcViewAdapter()
         recyclerView.adapter = adapter
+
 
         CoroutineScope(Dispatchers.IO).launch {
             val product = webRepo.retrofit.getCharacter()

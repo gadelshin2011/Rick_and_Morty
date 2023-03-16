@@ -5,19 +5,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.runtime.currentRecomposeScope
-import com.example.rickmortyretrofit.R
 import com.example.rickmortyretrofit.databinding.FragmentInfoPersonBinding
 import com.example.rickmortyretrofit.model.Result
 import com.squareup.picasso.Picasso
 
 class InfoPersonFragment : Fragment() {
-    lateinit var binding: FragmentInfoPersonBinding
-    lateinit var currentModel : Result
+    private lateinit var binding: FragmentInfoPersonBinding
+    private lateinit var currentModel: Result
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentInfoPersonBinding.inflate(inflater, container, false)
         currentModel = arguments?.getSerializable("note") as Result
         // Inflate the layout for this fragment
@@ -30,11 +28,15 @@ class InfoPersonFragment : Fragment() {
     }
 
     private fun init() {
+        transferringDataFromTheModel()
+
+    }
+
+    private fun transferringDataFromTheModel() {
         Picasso.get().load(currentModel.image).into(binding.imageView)
         binding.tvName.text = currentModel.name
         binding.tvGender.text = currentModel.gender
         binding.tvStatus.text = currentModel.status
-
     }
 
 

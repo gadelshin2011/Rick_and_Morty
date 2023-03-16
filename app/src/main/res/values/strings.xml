@@ -5,4 +5,10 @@
     <string name="personName">Name</string>
     <string name="personGender">Gender</string>
     <string name="personStatus">Status</string>
+
+    <string name="locationName">Location Name</string>
+    <string name="list_of_location">List of Location</string>
+    <string name="location_type">Location Type</string>
+    <string name="location_dimension">Location Dimension</string>
+
 </resources>

@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.SearchView.OnCloseListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyretrofit.APP
@@ -24,7 +26,7 @@ class StartFragment : Fragment() {
     lateinit var binding: FragmentStartBinding
     private lateinit var recyclerView: RecyclerView
     lateinit var adapter: RcViewAdapter
-    val webRepo = WebRepository()
+    lateinit var webRepo: WebRepository
     var number = 1
 
 
@@ -35,37 +37,46 @@ class StartFragment : Fragment() {
         binding = FragmentStartBinding.inflate(inflater, container, false)
         // Inflate the layout for this fragment
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         init()
-        binding.searchView.visibility = View.GONE
     }
 
     private fun init() {
+        // val viewModel = ViewModelProvider(this)[StartFragmentViewModel::class.java]
+        initialization()
+        requestAllList()
+        recyclerScrollListener()
+        setListener()
+        searchView()
+    }
+
+    private fun initialization() {
+        binding.searchView.visibility = View.GONE
         recyclerView = binding.rcViewStart
-        recyclerView.layoutManager = GridLayoutManager(context,2)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
         adapter = RcViewAdapter()
+        webRepo = WebRepository()
         recyclerView.adapter = adapter
 
+    }
 
+    private fun requestAllList() {
         CoroutineScope(Dispatchers.IO).launch {
             val product = webRepo.retrofit.getCharacter()
-
             withContext(Dispatchers.Main) {
                 adapter.setList(product.results)
-
-
             }
         }
+    }
 
+    private fun recyclerScrollListener() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
-
                 if (!recyclerView.canScrollVertically(1)) {
                     CoroutineScope(Dispatchers.IO).launch {
                         number++
@@ -82,12 +93,20 @@ class StartFragment : Fragment() {
                 }
             }
         })
+    }
+
+    private fun setListener() {
 
         binding.imageSearchButton.setOnClickListener {
             binding.searchView.visibility = View.VISIBLE
-           binding.imageSearchButton.visibility = View.GONE
+            binding.imageSearchButton.visibility = View.GONE
         }
 
+
+
+    }
+
+    private fun searchView() {
         binding.searchView.setOnQueryTextListener(object : OnQueryTextListener,
             SearchView.OnQueryTextListener {
 
@@ -109,14 +128,15 @@ class StartFragment : Fragment() {
             }
 
         })
-
-
-
-
+        binding.searchView.setOnCloseListener {
+            binding.searchView.visibility = View.GONE
+            binding.imageSearchButton.visibility = View.VISIBLE
+            true
+        }
     }
 
-    companion object{
-        fun clickNote(noteModel: Result){
+    companion object {
+        fun clickNote(noteModel: Result) {
             val bundle = Bundle()
             bundle.putSerializable("note", noteModel)
 
@@ -125,3 +145,5 @@ class StartFragment : Fragment() {
     }
 
 }
+
+

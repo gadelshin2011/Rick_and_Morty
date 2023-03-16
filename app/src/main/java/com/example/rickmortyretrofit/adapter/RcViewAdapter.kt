@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyretrofit.APP
 import com.example.rickmortyretrofit.R
+import com.example.rickmortyretrofit.model.Location
 import com.example.rickmortyretrofit.model.Result
 import com.example.rickmortyretrofit.screens.startscreen.StartFragment
 import com.squareup.picasso.Picasso

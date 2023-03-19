@@ -5,8 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
+import com.example.rickmortyretrofit.APP
 import com.example.rickmortyretrofit.R
 import com.example.rickmortyretrofit.databinding.FragmentInfoPersonBinding
 import com.example.rickmortyretrofit.model.Result
@@ -20,7 +19,7 @@ class InfoPersonFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentInfoPersonBinding.inflate(inflater, container, false)
-        currentModel = requireArguments().getParcelable<Result>("note")!!
+        currentModel = arguments?.getSerializable("note") as Result
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -44,15 +43,9 @@ class InfoPersonFragment : Fragment() {
         binding.tvLocation.text = currentModel.location.name
     }
 
-    private fun setListener() {
+    private fun setListener(){
         binding.imBtnBack.setOnClickListener {
-            findNavController().navigate(R.id.action_infoPersonFragment_to_startFragment)
-        }
-    }
-
-    companion object {
-        fun getBundle(noteModel: Result): Bundle {
-            return bundleOf("note" to noteModel)
+            APP.navController.navigate(R.id.action_infoPersonFragment_to_startFragment)
         }
     }
 

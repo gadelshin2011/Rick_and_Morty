@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Detail Character"
-        android:textStyle="bold"
-        android:textSize="24sp"
+        android:textStyle="italic"
+        android:textSize="20sp"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +39,7 @@
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvName"
         app:layout_constraintStart_toStartOf="@+id/tvName"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
@@ -46,37 +47,40 @@
         android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toEndOf="@+id/labelName"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/labelGender"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Gender :"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/labelName"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvGender"
+        app:layout_constraintEnd_toEndOf="@+id/labelStatus"
         app:layout_constraintStart_toStartOf="@+id/labelName"
         app:layout_constraintTop_toBottomOf="@+id/labelName" />
 
     <TextView
         android:id="@+id/labelName"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Name :"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/tvName"
+        app:layout_constraintEnd_toEndOf="@+id/labelGender"
         app:layout_constraintStart_toStartOf="@+id/imageView"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
@@ -88,20 +92,21 @@
         android:text="TextView"
         android:textColor="@color/white"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="@+id/tvGender"
         app:layout_constraintStart_toStartOf="@+id/tvGender"
         app:layout_constraintTop_toBottomOf="@+id/tvGender" />
 
     <TextView
         android:id="@+id/labelStatus"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Status :"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/labelGender"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvStatus"
+        app:layout_constraintEnd_toEndOf="@+id/labelLocation"
         app:layout_constraintStart_toStartOf="@+id/labelName"
         app:layout_constraintTop_toBottomOf="@+id/labelGender" />
 
@@ -114,8 +119,7 @@
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@+id/labelGender"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="@+id/tvLocation"
         app:layout_constraintStart_toStartOf="@+id/labelName"
         app:layout_constraintTop_toBottomOf="@+id/labelStatus" />
 
@@ -128,7 +132,22 @@
         android:textColor="@color/white"
         android:textSize="18sp"
 
+        app:layout_constraintEnd_toEndOf="@+id/tvStatus"
         app:layout_constraintStart_toStartOf="@+id/tvStatus"
         app:layout_constraintTop_toBottomOf="@+id/tvStatus" />
+
+    <ImageButton
+        android:id="@+id/imBtnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:background="#394047"
+        android:src="@drawable/ic_baseline_back_24"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNameFragmentDetail"
+        app:layout_constraintEnd_toStartOf="@+id/tvNameFragmentDetail"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

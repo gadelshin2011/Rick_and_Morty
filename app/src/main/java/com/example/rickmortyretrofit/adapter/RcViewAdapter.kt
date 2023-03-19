@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -62,6 +63,14 @@ class RcViewAdapter:RecyclerView.Adapter<RcViewAdapter.MyHolder>(){
 
     override fun onViewDetachedFromWindow(holder: MyHolder) {
         holder.itemView.setOnClickListener(null)
+    }
+
+    fun favoriteButtonStateChange(holder: MyHolder){
+        val img = holder.itemView.findViewById<ImageButton>(R.id.imageStateFavoriteButton)
+        img.setOnClickListener {
+
+
+        }
     }
 
 

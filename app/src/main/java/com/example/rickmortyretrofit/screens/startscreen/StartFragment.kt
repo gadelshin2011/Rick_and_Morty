@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.SearchView
 import android.widget.SearchView.OnCloseListener
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -102,7 +103,9 @@ class StartFragment : Fragment() {
             binding.imageSearchButton.visibility = View.GONE
         }
 
+    }
 
+    fun changeStateButton(){
 
     }
 

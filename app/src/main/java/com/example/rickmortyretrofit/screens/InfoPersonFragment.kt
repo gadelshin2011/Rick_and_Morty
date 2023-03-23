@@ -7,20 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
-import com.example.rickmortyretrofit.R
 import com.example.rickmortyretrofit.databinding.FragmentInfoPersonBinding
-import com.example.rickmortyretrofit.model.Result
+import com.example.rickmortyretrofit.model.Results
 import com.squareup.picasso.Picasso
 
 class InfoPersonFragment : Fragment() {
     private lateinit var binding: FragmentInfoPersonBinding
-    private lateinit var currentModel: Result
+    private lateinit var currentModel: Results
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentInfoPersonBinding.inflate(inflater, container, false)
-        currentModel = requireArguments().getParcelable<Result>("note")!!
+        currentModel = requireArguments().getParcelable<Results>("note")!!
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -46,12 +45,13 @@ class InfoPersonFragment : Fragment() {
 
     private fun setListener() {
         binding.imBtnBack.setOnClickListener {
-            findNavController().navigate(R.id.action_infoPersonFragment_to_startFragment)
+            //findNavController().navigate(R.id.action_infoPersonFragment_to_startFragment)
+            findNavController().popBackStack()
         }
     }
 
     companion object {
-        fun getBundle(noteModel: Result): Bundle {
+        fun getBundle(noteModel: Results): Bundle {
             return bundleOf("note" to noteModel)
         }
     }

@@ -2,32 +2,28 @@ package com.example.rickmortyretrofit.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.core.widget.TintableImageSourceView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rickmortyretrofit.R
 import com.example.rickmortyretrofit.databinding.RcItemCopyBinding
-import com.example.rickmortyretrofit.model.Location
-import com.example.rickmortyretrofit.model.Result
-import com.example.rickmortyretrofit.screens.startscreen.StartFragment
+import com.example.rickmortyretrofit.model.Results
 import com.squareup.picasso.Picasso
 
 class RcViewAdapter (
-    private val clickOnItem: (Result) -> Unit,
-    private val clickOnLike: (Result) -> Unit
+    private val clickOnItem: (Results) -> Unit,
+
         ):RecyclerView.Adapter<RcViewAdapter.MyHolder>() {
-    private var listItem : List<Result> = emptyList()
+    private  var listItem : MutableList<Results> = mutableListOf()
     class MyHolder(
         private val binding: RcItemCopyBinding,
-        private val clickOnItem: (Result) -> Unit,
-        private val clickOnLike: (Result) -> Unit
+        private val clickOnItem: (Results) -> Unit,
+
         ) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(result:Result){
+        @SuppressLint("ResourceAsColor")
+        fun bind(result:Results){
 
             setName(result.name)
             setImage(result.image)
@@ -38,7 +34,9 @@ class RcViewAdapter (
 
 
             binding.imageStateFavoriteButton.setOnClickListener {
-                clickOnLike(result)
+                result.isLike = !result.isLike
+                binding.imageStateFavoriteButton.isSelected = result.isLike
+
             }
         }
         private fun setName(name: String){
@@ -56,8 +54,8 @@ class RcViewAdapter (
             RcItemCopyBinding.inflate(
                 LayoutInflater.from(parent.context), parent, false
             ),
-            clickOnItem,
-            clickOnLike
+            clickOnItem
+
         )
     }
 
@@ -70,19 +68,24 @@ class RcViewAdapter (
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setList(list:List<Result>){
+    fun setList(list:List<Results>) {
         val personDiffUtil = PersonDiffUtil(
             oldList = listItem,
             newList = list
         )
         val diffResult = DiffUtil.calculateDiff(personDiffUtil)
-        listItem = list
+        listItem.clear()
+        listItem.addAll(list)
         diffResult.dispatchUpdatesTo(this)
 
     }
     @SuppressLint("NotifyDataSetChanged")
-    fun addList(list:List<Result>){
+    fun addList(list:List<Results>){
+        listItem.addAll(list)
         notifyDataSetChanged()
+
+
+
     }
 
 
@@ -99,8 +102,8 @@ class RcViewAdapter (
 
 
     class PersonDiffUtil(
-        val newList: List<Result>,
-        val oldList: List<Result>,
+        val newList: List<Results>,
+        val oldList: List<Results>,
     ): DiffUtil.Callback(){
         override fun getOldListSize(): Int {
             return oldList.size

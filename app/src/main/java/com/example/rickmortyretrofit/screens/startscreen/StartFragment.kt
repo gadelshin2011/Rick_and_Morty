@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,10 +13,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.SCROLL_STATE_DRAGGING
 import com.example.rickmortyretrofit.R
 import com.example.rickmortyretrofit.adapter.RcViewAdapter
 import com.example.rickmortyretrofit.databinding.FragmentStartBinding
-import com.example.rickmortyretrofit.model.Result
+import com.example.rickmortyretrofit.model.Results
 import com.example.rickmortyretrofit.network.WebRepository
 import com.example.rickmortyretrofit.screens.InfoPersonFragment
 import kotlinx.coroutines.CoroutineScope
@@ -28,10 +30,10 @@ import kotlinx.coroutines.withContext
 class StartFragment : Fragment() {
     lateinit var binding: FragmentStartBinding
     private lateinit var recyclerView: RecyclerView
-    lateinit var adapter: RcViewAdapter
+    val adapterRc: RcViewAdapter = RcViewAdapter(clickOnItem = ::selectItem)
     lateinit var webRepo: WebRepository
     var number = 1
-    val viewModel: StartFragmentViewModel by viewModels()
+    private val viewModel: StartFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,62 +41,65 @@ class StartFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentStartBinding.inflate(inflater, container, false)
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+       // binding.rcViewStart.itemAnimator = null
         init()
+        binding.rcViewStart.adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
 
     private fun init() {
-        // val viewModel = ViewModelProvider(this)[StartFragmentViewModel::class.java]
         initialization()
+        showData()
         recyclerScrollListener()
         setListener()
         searchView()
+    }
+
+    private fun showData() {
 
         viewModel.persons.onEach {
-            adapter.setList(it)
+            adapterRc.setList(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
+
 
     private fun initialization() {
         binding.searchView.visibility = View.GONE
         recyclerView = binding.rcViewStart
         recyclerView.layoutManager = GridLayoutManager(context, 2)
-        adapter = RcViewAdapter(clickOnItem = ::selectItem, clickOnLike = ::clickOnItemLike)
         webRepo = WebRepository()
-        recyclerView.adapter = adapter
+        recyclerView.adapter = adapterRc
     }
 
-    private fun selectItem(result: com.example.rickmortyretrofit.model.Result) {
+    private fun selectItem(result: com.example.rickmortyretrofit.model.Results) {
         findNavController().navigate(
             R.id.action_startFragment_to_infoPersonFragment,
             InfoPersonFragment.getBundle(result),
         )
     }
 
-    private fun clickOnItemLike(result: Result) {
-        viewModel.changeLikeOnPerson(result)
-    }
 
     private fun recyclerScrollListener() {
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!recyclerView.canScrollVertically(1)) {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        number++
-                        val page = webRepo.retrofit.getPage(number)
+//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                super.onScrolled(recyclerView, dx, dy)
+//                if (!recyclerView.canScrollVertically(1)) {
+//                    number++
+//                    viewModel.loadPage(number)
+//                }
+//            }
 
-                        withContext(Dispatchers.Main) {
-                            adapter.addList(page.results)
-                        }
-                    }
-                    binding.searchView.visibility = View.GONE
-                    binding.imageSearchButton.visibility = View.VISIBLE
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == SCROLL_STATE_DRAGGING) {
+                    number++
+                    Toast.makeText(requireContext(),"Page $number", Toast.LENGTH_SHORT).show()
+                    viewModel.loadNextPage()
+
                 }
             }
         })
@@ -107,16 +112,13 @@ class StartFragment : Fragment() {
         }
     }
 
-    fun changeStateButton() {
-    }
-
     private fun searchView() {
         binding.searchView.setOnQueryTextListener(object :
             OnQueryTextListener,
             SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+                return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -124,10 +126,9 @@ class StartFragment : Fragment() {
                     val product = newText?.let { webRepo.retrofit.getSearchByName(it) }
 
                     withContext(Dispatchers.Main) {
-                        product?.results?.let { adapter.setList(it) }
+                        product?.results?.let { adapterRc.setList(it as MutableList<Results>) }
                     }
                 }
-
                 return true
             }
         })
@@ -136,5 +137,6 @@ class StartFragment : Fragment() {
             binding.imageSearchButton.visibility = View.VISIBLE
             true
         }
+
     }
 }

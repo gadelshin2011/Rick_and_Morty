@@ -4,9 +4,9 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Result(
+data class Results(
     val created: String,
-    val episode: List<String>,
+    val episode: MutableList<String>,
     val gender: String,
     val id: Int,
     val image: String,
@@ -18,4 +18,5 @@ data class Result(
     val type: String,
     val url: String,
     var isLike: Boolean
+
 ): Parcelable

@@ -44,9 +44,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="top|end"
-        android:layout_margin="2dp"
-        android:background="#4C5465"
-        app:srcCompat="@drawable/ic_baseline_favorite_first_state" />
+        android:layout_margin="4dp"
+        android:background="@color/RcItemColor"
+        app:srcCompat="@drawable/image_button_stile"
+        />
 
 
 </androidx.cardview.widget.CardView>

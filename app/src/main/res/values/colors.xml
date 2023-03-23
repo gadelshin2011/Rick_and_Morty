@@ -10,4 +10,6 @@
     <color name="itemViewColor">#20A193</color>
     <color name="backRcColor">#0D3E39</color>
     <color name="fragment_color">#394047</color>
+    <color name="RcItemColor" >#4C5465</color>
+
 </resources>

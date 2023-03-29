@@ -16,8 +16,10 @@ class RcViewAdapter (
     private val clickOnItem: (Results) -> Unit,
 
         ):RecyclerView.Adapter<RcViewAdapter.MyHolder>() {
-    private  var listItem : MutableList<Results> = mutableListOf()
+      var listItem : MutableList<Results> = mutableListOf()
+
     class MyHolder(
+
         private val binding: RcItemCopyBinding,
         private val clickOnItem: (Results) -> Unit,
 
@@ -37,6 +39,8 @@ class RcViewAdapter (
                 result.isLike = !result.isLike
                 binding.imageStateFavoriteButton.isSelected = result.isLike
 
+
+
             }
         }
         private fun setName(name: String){
@@ -55,7 +59,6 @@ class RcViewAdapter (
                 LayoutInflater.from(parent.context), parent, false
             ),
             clickOnItem
-
         )
     }
 

@@ -1,4 +1,4 @@
-package com.example.rickmortyretrofit.screens
+package com.example.rickmortyretrofit.screens.InfoPerson
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -45,8 +45,7 @@ class InfoPersonFragment : Fragment() {
 
     private fun setListener() {
         binding.imBtnBack.setOnClickListener {
-            //findNavController().navigate(R.id.action_infoPersonFragment_to_startFragment)
-            findNavController().popBackStack()
+          findNavController().popBackStack()
         }
     }
 

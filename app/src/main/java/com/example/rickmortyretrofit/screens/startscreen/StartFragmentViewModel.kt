@@ -7,6 +7,7 @@ import com.example.rickmortyretrofit.network.WebRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.util.function.Predicate.not
 
 class StartFragmentViewModel() : ViewModel() {
 
@@ -22,33 +23,27 @@ class StartFragmentViewModel() : ViewModel() {
         loadNextPage()
 
     }
-
-//    fun changeLikeOnPerson(result: com.example.rickmortyretrofit.model.Results) {
+//    fun changeLikeOnPerson(result:Results) {
 //        val oldPersons = persons.value.toList()
 //        oldPersons.forEach {
 //            if (it.id == result.id)
 //                it.isLike = !it.isLike
+//
 //        }
 //
-//        persons.value = oldPersons as MutableList<Results>
+//        _persons.value = oldPersons
 //    }
 
 
-    //    private fun requestAllList() {
-//
+
+//    private fun requestAllList() {
 //        viewModelScope.launch {
 //            val product = webRepo.retrofit.getCharacter()
-//            persons.value = product.results as MutableList<Results>
+//            _persons.value = product.results
 //        }
+//
+//
 //    }
-    private fun requestAllList() {
-        viewModelScope.launch {
-            val product = webRepo.retrofit.getCharacter()
-            _persons.value = product.results
-        }
-
-
-    }
 
      fun loadNextPage() {
         viewModelScope.launch {
@@ -60,6 +55,8 @@ class StartFragmentViewModel() : ViewModel() {
 
             newPage.addAll(product.results)
             _persons.value = newPage.toList()
+
+
         }
 
 

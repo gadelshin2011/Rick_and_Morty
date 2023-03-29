@@ -13,14 +13,26 @@
         <action
             android:id="@+id/action_startFragment_to_infoPersonFragment"
             app:destination="@id/infoPersonFragment" />
+        <action
+            android:id="@+id/action_startFragment_to_favoriteFragment"
+            app:destination="@id/favoriteFragment" />
     </fragment>
     <fragment
         android:id="@+id/infoPersonFragment"
-        android:name="com.example.rickmortyretrofit.screens.InfoPersonFragment"
+        android:name="com.example.rickmortyretrofit.screens.InfoPerson.InfoPersonFragment"
         android:label="fragment_info_person"
         tools:layout="@layout/fragment_info_person" >
         <action
             android:id="@+id/action_infoPersonFragment_to_startFragment"
+            app:destination="@id/startFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoriteFragment"
+        android:name="com.example.rickmortyretrofit.screens.favoriteScreen.FavoriteFragment"
+        android:label="fragment_favorite"
+        tools:layout="@layout/fragment_favorite" >
+        <action
+            android:id="@+id/action_favoriteFragment_to_startFragment"
             app:destination="@id/startFragment" />
     </fragment>
 </navigation>

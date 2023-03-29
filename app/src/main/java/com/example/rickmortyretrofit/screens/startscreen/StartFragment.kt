@@ -19,7 +19,7 @@ import com.example.rickmortyretrofit.adapter.RcViewAdapter
 import com.example.rickmortyretrofit.databinding.FragmentStartBinding
 import com.example.rickmortyretrofit.model.Results
 import com.example.rickmortyretrofit.network.WebRepository
-import com.example.rickmortyretrofit.screens.InfoPersonFragment
+import com.example.rickmortyretrofit.screens.InfoPerson.InfoPersonFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
@@ -32,8 +32,9 @@ class StartFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     val adapterRc: RcViewAdapter = RcViewAdapter(clickOnItem = ::selectItem)
     lateinit var webRepo: WebRepository
-    var number = 1
+
     private val viewModel: StartFragmentViewModel by viewModels()
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,6 +48,7 @@ class StartFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
        // binding.rcViewStart.itemAnimator = null
+
         init()
         binding.rcViewStart.adapter?.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
     }
@@ -69,13 +71,16 @@ class StartFragment : Fragment() {
 
     private fun initialization() {
         binding.searchView.visibility = View.GONE
+        binding.progressBar?.visibility = View.GONE
         recyclerView = binding.rcViewStart
         recyclerView.layoutManager = GridLayoutManager(context, 2)
         webRepo = WebRepository()
         recyclerView.adapter = adapterRc
+
+
     }
 
-    private fun selectItem(result: com.example.rickmortyretrofit.model.Results) {
+    private fun selectItem(result: Results) {
         findNavController().navigate(
             R.id.action_startFragment_to_infoPersonFragment,
             InfoPersonFragment.getBundle(result),
@@ -84,31 +89,32 @@ class StartFragment : Fragment() {
 
 
     private fun recyclerScrollListener() {
+        var pageNumber = 1
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-//            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                super.onScrolled(recyclerView, dx, dy)
-//                if (!recyclerView.canScrollVertically(1)) {
-//                    number++
-//                    viewModel.loadPage(number)
-//                }
-//            }
-
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1) && newState == SCROLL_STATE_DRAGGING) {
-                    number++
-                    Toast.makeText(requireContext(),"Page $number", Toast.LENGTH_SHORT).show()
+                    pageNumber++
+                    Toast.makeText(requireContext(),"Page №$pageNumber", Toast.LENGTH_SHORT).show()
                     viewModel.loadNextPage()
-
                 }
+
             }
+
         })
+
+
     }
 
     private fun setListener() {
         binding.imageSearchButton.setOnClickListener {
             binding.searchView.visibility = View.VISIBLE
             binding.imageSearchButton.visibility = View.GONE
+        }
+        binding.imBtnFavorite.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_startFragment_to_favoriteFragment
+            )
         }
     }
 
